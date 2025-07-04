@@ -1,3 +1,4 @@
+#Chatbot with Streamlit implementation 
 import streamlit as st
 import google.generativeai as genai
 from dotenv import load_dotenv
@@ -78,4 +79,7 @@ if st.session_state.history:
                 """,
                 unsafe_allow_html=True
             )
+
+
+
 

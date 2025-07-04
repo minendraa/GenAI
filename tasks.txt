@@ -1,7 +1,4 @@
 gemini api key command linu argument result implication
-
-prompt engineering 
-
+prompt engineering
 cli
-
-context retention on tourism 
+context retention on tourism
