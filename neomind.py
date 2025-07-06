@@ -59,7 +59,8 @@ chat_container = st.container()
 with chat_container:
     if st.session_state.messages:
         st.markdown("---")
-        for role, message in reversed(st.session_state.messages):  # Latest on top
+        # Changed from reversed() to display in chronological order
+        for role, message in st.session_state.messages:
             if role == "user":
                 st.markdown(f"<div class='user-msg'><strong>You:</strong><br>{message}</div>", unsafe_allow_html=True)
             else:
