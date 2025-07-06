@@ -16,7 +16,7 @@ if "chat" not in st.session_state:
 # Set page configuration
 st.set_page_config(page_title="NeoMind AI Chat", page_icon="🤖", layout="centered")
 
-
+# Inject custom CSS for black chat text only
 st.markdown("""
     <style>
     body {
@@ -37,6 +37,7 @@ st.markdown("""
         border-radius: 12px;
         text-align: right;
         margin-bottom: 10px;
+        color: #000; /* black */
     }
     .ai-msg {
         background-color: #e8f0fe;
@@ -44,48 +45,14 @@ st.markdown("""
         border-radius: 12px;
         text-align: left;
         margin-bottom: 10px;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-
-# Inject custom CSS for black text and enhanced UI
-st.markdown("""
-    <style>
-    body {
-        background-color: #f4f6f9;
-    }
-    .main {
-        background-color: #ffffff;
-        border-radius: 12px;
-        padding: 2rem;
-        box-shadow: 0 0 20px rgba(0,0,0,0.1);
-    }
-    input, button {
-        border-radius: 8px !important;
-    }
-    .user-msg {
-        background-color: #daf5dc;
-        padding: 12px;
-        border-radius: 12px;
-        text-align: right;
-        margin-bottom: 10px;
-        color: #000000;
-    }
-    .ai-msg {
-        background-color: #e8f0fe;
-        padding: 12px;
-        border-radius: 12px;
-        text-align: left;
-        margin-bottom: 10px;
-        color: #000000;
+        color: #000; /* black */
     }
     </style>
 """, unsafe_allow_html=True)
 
 # App header
 st.markdown("<h1 style='text-align: center; color: #2c3e50;'>🤖 Welcome to NeoMind AI</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: #000;'>Ask anything. NeoMind will respond intelligently.</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #7f8c8d;'>Ask anything. NeoMind will respond intelligently.</p>", unsafe_allow_html=True)
 
 # Display chat history
 chat_container = st.container()
