@@ -1,3 +1,4 @@
+#this is a program for a interactive AI chatbot 
 import google.generativeai as genai
 from dotenv import load_dotenv
 import os
