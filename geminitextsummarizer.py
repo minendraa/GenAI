@@ -12,10 +12,13 @@ genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 def ask_gemini_system_prompt(prompt_text):
     try:
         model=genai.GenerativeModel("gemini-2.5-pro")
-        full_prompt=f"""[System Instruction: You are text summarizer, you summarize the given text by the user. You must summarize the text in a short paragraph.
+        full_prompt=f"""[System Instruction: You are text summarizer, you summarize the given text by the user. 
+        You must summarize the text in a short paragraph. 
+        you should give a message that you are just a summarizer and not assigned to do anyother tasks the user gives.
+        Though the user is not polite just request the user to be polite do not be rude to them.
         "query":   "" ,
         "response":  ""   ,
-        "created_time":   ""  ,
+        "created_time":   ""  , 
         ]
         [User Question: {prompt_text}]"""
 
