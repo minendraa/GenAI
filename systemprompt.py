@@ -1,3 +1,4 @@
+#this is a system prompt code for gemini AI. 
 import google.generativeai as genai
 import os 
 from dotenv import load_dotenv
