@@ -1,3 +1,5 @@
+#this is the python program that implements temple chatbot of dakshinkali temple and provide information according to the user prompt.
+
 import streamlit as st
 from langchain_community.vectorstores import FAISS
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
