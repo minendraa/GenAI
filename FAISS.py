@@ -1,3 +1,5 @@
+#this is my faiss python program. 
+
 from langchain_community.document_loaders import PyPDFDirectoryLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
