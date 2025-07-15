@@ -96,15 +96,12 @@ templates = Jinja2Templates(directory="templates")
 
 @app.get("/roadmap/answer", response_class=HTMLResponse)
 async def get_data(request: Request):
-    url = "http://localhost:8080/roadmap/history"
+    url = "http://localhost:8000/roadmap/history"
 
     response = requests.get(url)
     data = response.json()
     question = data["query"]
     answer = data["response"]
-    # ans=[]
-    # for i in answer:
-    #     print(ans.append(i["step"]))
 
     context = {"request": request, "question": question, "answer": answer}
     return templates.TemplateResponse("answer.html", context)
