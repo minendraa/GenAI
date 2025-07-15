@@ -2,3 +2,4 @@ venv
 .env
 geminiapi.txt
 tasks.txt
+__pycache__
