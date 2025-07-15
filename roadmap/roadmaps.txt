@@ -1,0 +1,87 @@
+{
+  "query": "Prompt engineer",
+  "response": [
+    {
+      "step": "Understand Foundational AI, Machine Learning, and NLP Concepts"
+    },
+    {
+      "step": "Deep Dive into Large Language Models (LLMs) and Transformer Architecture"
+    },
+    {
+      "step": "Master the Basics of Prompting: Zero-shot, One-shot, and Few-shot learning"
+    },
+    {
+      "step": "Learn Advanced Prompt Engineering Techniques (e.g., Chain-of-Thought, Tree of Thoughts, Role-playing, Output Priming)"
+    },
+    {
+      "step": "Learn Python for Scripting, Automation, and Interacting with APIs"
+    },
+    {
+      "step": "Gain Proficiency with LLM APIs (e.g., OpenAI, Google Gemini, Anthropic Claude, Cohere)"
+    },
+    {
+      "step": "Understand and Use Version Control with Git and GitHub for Managing Prompts and Code"
+    },
+    {
+      "step": "Explore Model Fine-Tuning and Retrieval-Augmented Generation (RAG) to enhance LLM capabilities"
+    },
+    {
+      "step": "Learn to Evaluate LLM Outputs using both automated metrics and human feedback frameworks"
+    },
+    {
+      "step": "Develop Domain-Specific Expertise (e.g., legal, medical, code generation) to create contextual prompts"
+    },
+    {
+      "step": "Build a Portfolio of Diverse Prompting Projects and a Personal Prompt Library"
+    }
+  ],
+  "created_time": "2023-10-27T10:30:00"
+}
+
+---
+
+{
+  "query": "Data Scientist",
+  "response": [
+    {
+      "step": "Master Foundational Math and Statistics (Linear Algebra, Calculus, Probability, Statistics)"
+    },
+    {
+      "step": "Learn a Programming Language: Python is the industry standard"
+    },
+    {
+      "step": "Master Core Python Libraries for Data Science (NumPy, Pandas, Matplotlib, Seaborn)"
+    },
+    {
+      "step": "Learn Data Wrangling, Cleaning, and Preprocessing Techniques"
+    },
+    {
+      "step": "Understand SQL for Database Querying and Data Extraction"
+    },
+    {
+      "step": "Study Machine Learning Fundamentals (Supervised/Unsupervised Learning, Regression, Classification, Clustering)"
+    },
+    {
+      "step": "Explore Advanced Machine Learning Concepts (Ensemble Methods like Random Forests and Gradient Boosting, Model Evaluation Metrics)"
+    },
+    {
+      "step": "Get into Deep Learning (Neural Networks, TensorFlow/PyTorch)"
+    },
+    {
+      "step": "Learn Big Data Technologies (e.g., Apache Spark, Hadoop)"
+    },
+    {
+      "step": "Understand Model Deployment and MLOps (Docker, Cloud Platforms like AWS/Azure/GCP, APIs)"
+    },
+    {
+      "step": "Build a Strong Portfolio of Projects (e.g., on GitHub, Kaggle)"
+    },
+    {
+      "step": "Specialize in an Area (e.g., NLP, Computer Vision) and Engage in Continuous Learning"
+    }
+  ],
+  "created_time": "2023-10-27T10:30:00"
+}
+
+---
+

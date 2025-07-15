@@ -22,7 +22,7 @@ Strictly return the output in the following **JSON format** only:
 
 {{
   "query": "the user's prompt here",
-  "response": ["Step 1", "Step 2", "Step 3", "..."],
+  "response": [{"Step 1"}, {"Step 2"}, {"Step 3"}, "..."],
   "created_time": "YYYY-MM-DDTHH:MM:SS"
 }}
 
