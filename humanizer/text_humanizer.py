@@ -2,7 +2,6 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 import torch
-from typing import List
 
 app = FastAPI()
 
@@ -19,7 +18,6 @@ class HumanizeRequest(BaseModel):
 class HumanizeResponse(BaseModel):
     original: str
     humanized: str
-    all_versions: List[str]
 
 @app.post("/humanize", response_model=HumanizeResponse)
 async def humanize_text(request: HumanizeRequest):
@@ -44,14 +42,9 @@ async def humanize_text(request: HumanizeRequest):
     
     return HumanizeResponse(
         original=request.text,
-        humanized=best_paraphrase,
-        all_versions=paraphrases
+        humanized=best_paraphrase
     )
 
 @app.get("/")
 async def health_check():
     return {"status": "healthy", "model": model_name}
-
-# if __name__ == "__main__":
-#     import uvicorn
-#     uvicorn.run(app, host="0.0.0.0", port=8000)
