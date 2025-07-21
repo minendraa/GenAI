@@ -13,72 +13,92 @@ load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 # Paths
-CV_DATA_PATH = "cv_data"  # Folder containing CV PDFs
+CV_DATA_PATH = "cv_data"
 FAISS_PATH = "faiss_openai_cv"
 
 def ingest_cvs():
-    """Load, split, embed, and save CVs to FAISS."""
-    print("📥 Loading and processing CVs...")
-    loader = PyPDFDirectoryLoader(CV_DATA_PATH)
-    docs = loader.load()
+    """Load, split, embed, and save CVs to FAISS if index doesn't exist."""
+    # First check if there are any PDF files
+    pdf_files = [f for f in os.listdir(CV_DATA_PATH) if f.lower().endswith('.pdf')]
+    if not pdf_files:
+        print(f"⚠️ No PDF files found in {CV_DATA_PATH}")
+        return
 
-    # Split text with smaller chunks for CVs (better for extracting specific details)
-    splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
-    chunks = splitter.split_documents(docs)
+    # Check if FAISS index exists
+    if (os.path.exists(os.path.join(FAISS_PATH, "index.faiss")) and 
+        os.path.exists(os.path.join(FAISS_PATH, "index.pkl"))):
+        print(f"⏩ FAISS index already exists with {len(pdf_files)} PDFs. Skipping ingestion.")
+        return
 
-    embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
-    db = FAISS.from_documents(chunks, embedding=embeddings)
-    db.save_local(FAISS_PATH)
+    print(f"📥 Processing {len(pdf_files)} CVs...")
+    try:
+        loader = PyPDFDirectoryLoader(CV_DATA_PATH)
+        docs = loader.load()
+        
+        if len(docs) != len(pdf_files):
+            print(f"⚠️ Warning: Loaded {len(docs)} documents but found {len(pdf_files)} PDF files")
+        
+        splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
+        chunks = splitter.split_documents(docs)
 
-    print(f"✅ Embedding complete. Processed {len(chunks)} chunks from CVs.")
+        embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
+        db = FAISS.from_documents(chunks, embedding=embeddings)
+        
+        os.makedirs(FAISS_PATH, exist_ok=True)
+        db.save_local(FAISS_PATH)
+        
+        print(f"✅ Created FAISS index with {len(chunks)} chunks from {len(docs)} CVs")
+    except Exception as e:
+        print(f"❌ Error during ingestion: {str(e)}")
 
 def query_cv(query_text: str) -> str:
-    """Load FAISS DB and get answer about CVs."""
+    """Query the CV database."""
     print("🔍 Loading CV database...")
-    embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
-    db = FAISS.load_local(folder_path=FAISS_PATH, embeddings=embeddings, allow_dangerous_deserialization=True)
+    try:
+        embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
+        db = FAISS.load_local(folder_path=FAISS_PATH, embeddings=embeddings, allow_dangerous_deserialization=True)
+        
+        llm = ChatOpenAI(model="gpt-4-turbo")
 
-    # Using GPT-4 for better understanding of CV content
-    llm = ChatOpenAI(model="gpt-4-turbo")
+        # Simplified prompt without template logic
+        prompt = ChatPromptTemplate.from_template(
+            """You are an expert HR assistant analyzing CVs. Answer the question using only the provided context.
+            
+            Context: {context}
+            
+            Question: {input}
+            
+            Provide clear, concise answers. When listing names, include all candidates found."""
+        )
 
-    prompt = ChatPromptTemplate.from_template(
-        """
-        You are an expert HR assistant analyzing CVs. Use only the provided CV information to answer.
-        Be precise and extract relevant details from the CVs.
-
-        Context from CVs:
-        {context}
-
-        Question:
-        {input}
-
-        Provide the most relevant information found in the CVs. If asking about specific candidates,
-        mention their name and the relevant details from their CV.
-        """
-    )
-
-    retriever = db.as_retriever(search_kwargs={"k": 3})  # Fewer but more relevant chunks for CVs
-    doc_chain = create_stuff_documents_chain(llm, prompt)
-    chain = create_retrieval_chain(retriever, doc_chain)
-
-    response = chain.invoke({"input": query_text})
-    return response['answer'].strip()
+        retriever = db.as_retriever(search_kwargs={"k": 5})
+        chain = create_retrieval_chain(retriever, create_stuff_documents_chain(llm, prompt))
+        
+        response = chain.invoke({"input": query_text})
+        return response['answer'].strip()
+    except Exception as e:
+        return f"Error processing query: {str(e)}"
 
 if __name__ == "__main__":
-    # Step 1: Ingest CVs (run once initially)
-    # ingest_cvs()  # Uncomment to process CVs, then comment after first run
+    # First run ingestion (comment out after first run)
+    ingest_cvs()
 
-    # Step 2: Query CV database
+    # Query interface
     print("\nCV Analysis Assistant (type 'exit' to quit)")
     print("Example questions:")
-    print("- Who has learned Python and machine learning?")
-    print("- Give name of all the candidates.")
-    #print("- List all candidates with MBA degrees")
+    print("- List all candidate names")
+    print("- Who has Python experience?")
     
     while True:
-        query_text = input("\n❓ What would you like to know about the candidates? ")
-        if query_text.lower() in ['exit', 'quit']:
+        try:
+            query_text = input("\n❓ What would you like to know about the candidates? ")
+            if query_text.lower() in ['exit', 'quit']:
+                break
+            response = query_cv(query_text)
+            print("\n💬 Answer:")
+            print(response)
+        except KeyboardInterrupt:
+            print("\nExiting...")
             break
-        response = query_cv(query_text)
-        print("\n💬 CV Analysis Result:")
-        print(response)
+        except Exception as e:
+            print(f"Error: {str(e)}")
